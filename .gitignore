@@ -1,0 +1,16 @@
+# 依赖
+node_modules/
+
+# macOS
+.DS_Store
+
+# 构建产物
+dist/
+
+# 日志
+*.log
+npm-debug.log*
+
+# 编辑器
+.vscode/
+.idea/
