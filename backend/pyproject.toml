@@ -1,0 +1,11 @@
+[project]
+name = "zero-to-tech-backend"
+version = "0.1.0"
+description = "Python examples for zero-to-tech"
+requires-python = ">=3.10"
+dependencies = [
+    "requests==2.34.2",
+]
+
+[tool.uv]
+package = false

@@ -18,3 +18,9 @@ npm-debug.log*
 # 编辑器
 .vscode/
 .idea/
+
+backend/.venv/
+
+# Python 缓存
+__pycache__/
+*.py[cod]
