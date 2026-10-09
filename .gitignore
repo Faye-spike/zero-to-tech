@@ -20,6 +20,8 @@ npm-debug.log*
 .idea/
 
 backend/.venv/
+backend/__pycache__/
+*.pyc
 
 # Python 缓存
 __pycache__/
