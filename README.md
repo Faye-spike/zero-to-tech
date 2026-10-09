@@ -24,6 +24,33 @@ uv run first_json.py      # 输出 JSON 示例
 uv run api_demo.py        # 调用外部 API，需要联网
 ```
 
+### 文字实验室：接入模型情感分析
+
+在 `backend/.env.local` 中填写后端配置（此文件已被 Git 忽略）：
+
+```dotenv
+LLM_PROVIDER=deepseek
+DEEPSEEK_API_KEY=替换为你的真实密钥
+```
+
+使用 OpenAI 时改为 `LLM_PROVIDER=openai` 和 `OPENAI_API_KEY=你的真实密钥`。
+可以额外设置 `LLM_MODEL` 指定模型。密钥只放后端，不能使用 `NEXT_PUBLIC_` 前缀。
+
+在 `backend/` 目录运行：
+
+```bash
+uv run sentiment.py                         # 单独验证模型
+uv run uvicorn main:app --reload             # 启动网页使用的后端
+```
+
+`sentiment.py` 会自动读取其所在目录的 `.env.local`，也支持继续使用
+`uv run --env-file .env.local ...`；终端中已设置的环境变量优先。
+
+另开一个终端，在项目根目录运行 `npm run dev`，访问 `/text-lab` 并点击“开始分析”。
+`POST /api/analyze` 会调用 `sentiment.py`，返回真实拼音、情感类别、分析依据，
+并把模型的五档 0～100 分转换为网页使用的 0～1 分；无法判断时分数为 `null`。
+情感分数不是概率。修改 `.env.local` 后需要重启后端。
+
 无需手动激活虚拟环境。后续在 `backend/` 目录管理依赖：
 
 ```bash

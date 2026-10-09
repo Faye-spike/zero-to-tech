@@ -5,7 +5,10 @@ description = "Python examples for zero-to-tech"
 requires-python = ">=3.10"
 dependencies = [
     "fastapi[standard]>=0.143.0",
+    "openai>=3.26.1",
+    "pydantic>=2",
     "pypinyin>=0.55.0",
+    "python-dotenv>=1.2.4",
     "requests==2.34.2",
 ]
 
