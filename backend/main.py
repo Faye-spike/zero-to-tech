@@ -4,7 +4,11 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from pypinyin import lazy_pinyin, Style
 from sentiment import analyze as analyze_sentiment, create_client
+from storage import init_db,save_record, get_history
+from datetime import datetime, timezone
 
+
+init_db()  # 启动时初始化数据库，确保表存在
 app = FastAPI()
 
 app.add_middleware(
@@ -62,7 +66,7 @@ def analyze(request: AnalyzeRequest):
     except (ValueError, RuntimeError) as exc:
         raise HTTPException(status_code=502, detail="模型返回了无效的分析结果，请重试") from exc
 
-    return {
+    result = {
         "text": request.text,
         # 保持网页的 0～1 范围；这是情感评分，不是概率。
         "score": result.score / 100 if result.score is not None else None,
@@ -70,4 +74,12 @@ def analyze(request: AnalyzeRequest):
         "reason": result.reason,
         "evidence": result.evidence,
         "pinyin": " ".join(lazy_pinyin(request.text, style=Style.TONE)),
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
     }
+    save_record(result)
+    return result
+
+@app.get("/api/history")
+def history():
+    return get_history(10)  # 返回最近十条
+ 
